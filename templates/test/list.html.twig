@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Les films{% endblock %}
+
+{% block body %}
+
+<h1>Les films</h1>
+
+<ul>
+    {% for movie in movies %}
+    <li>{{ movie.title }} ({{ movie.releaseDate|date('Y') }})</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
