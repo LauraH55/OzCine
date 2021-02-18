@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class TestController extends AbstractController
-{   
+{
     /**
      * @Route("/test/movie/list", name="test_movie_list")
      */
@@ -36,8 +36,9 @@ class TestController extends AbstractController
     {
         // 1. Créer une nouvelle entité
         $avatar = new Movie();
-        $avatar->setTitle('Le cercle des poètes disparus');
-        $avatar->setReleaseDate(new \DateTime('2012-12-20'));
+        $avatar->setTitle('La Ligne Verte');
+        $avatar->setReleaseDate(new \DateTime('2005-06-20'));
+        $avatar->setCreatedAt(new \DateTime());
         dump($avatar);
 
         // 2. On fait appel au manager d'entité de Doctrine
@@ -52,5 +53,29 @@ class TestController extends AbstractController
 
         // Le /body permet à la toolbar de s'accrocher
         return new Response('Film ajouté.</body>');
+    }
+
+    /**
+     * @Route("/test/movie/edit/{id}", name="test_movie_edit")
+     */
+    public function editMovie($id)
+    {
+        // 1. On accède au Repository de l'entité Movie
+        $movieRepository = $this->getDoctrine()->getRepository(Movie::class);
+
+        // 2. ON va chercher le film demandé
+        $movie = $movieRepository->find($id);
+
+        // @todo : 404 ?
+
+        // 3. On modifie l'objet
+        $movie->setUpdatedAt(new \DateTime());
+
+        // 4. On fait appel au Manager pour mettre à jour
+        //! Pas besoin de ->persist($movie) puisque $movie existe déjà en database
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->flush();
+
+        return $this->redirectToRoute('test_movie_list');
     }
 }
