@@ -1,0 +1,11 @@
+ACTOR: actor name
+plays in, 0N FILM, 0N ACTOR: role
+USER: user name
+
+belongs to, 0N FILM, 0N GENRE
+FILM: title, duration, synopsis, release date
+posts, 11 REVIEW, 0N USER
+
+GENRE: genre name,
+relates to, 0N FILM, 11 REVIEW
+REVIEW: review content, published date

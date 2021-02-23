@@ -9,6 +9,19 @@
 <ul>
     {% for movie in movies %}
     <li>{{ movie.title }} ({{ movie.releaseDate|date('Y') }})</li>
+
+    {# 
+        Reviews (le mieux serait de le faire dans une autre page
+        Les Reviews contenus dans $movie->getReviews() 
+    #}
+    <ul>
+
+        {% for review in movie.reviews %}
+           <li>{{ review.content }}</li> 
+        {% endfor %}
+    
+    
+    </ul>
     {% endfor %}
 </ul>
 

@@ -1,0 +1,64 @@
+<html>
+<head>
+<meta charset='utf-8'>
+<style>
+  #mld .relation { font-variant: small-caps; font-weight: bold }
+  #mld .primary { text-decoration: underline }
+  #mld .foreign { font-style: oblique }
+  #mld .normal { }
+</style>
+</head>
+<body>
+<div id='mld'>
+<!--
+<div>
+  <span class='relation'>ACTOR</span> (
+    <span class='primary'>actor name</span>
+  )
+</div>
+-->
+<div>
+  <span class='relation'>plays in</span> (
+    <span class='foreign primary'>title</span>,
+    <span class='foreign primary'>actor name</span>,
+    <span class='normal'>role</span>
+  )
+</div>
+<!--
+<div>
+  <span class='relation'>USER</span> (
+    <span class='primary'>user name</span>
+  )
+</div>
+-->
+<div>
+  <span class='relation'>belongs to</span> (
+    <span class='foreign primary'>title</span>,
+    <span class='foreign primary'>genre name</span>
+  )
+</div>
+<div>
+  <span class='relation'>FILM</span> (
+    <span class='primary'>title</span>,
+    <span class='normal'>duration</span>,
+    <span class='normal'>synopsis</span>,
+    <span class='normal'>release date</span>
+  )
+</div>
+<div>
+  <span class='relation'>GENRE</span> (
+    <span class='primary'>genre name</span>,
+    <span class='normal'></span>
+  )
+</div>
+<div>
+  <span class='relation'>REVIEW</span> (
+    <span class='primary'>review content</span>,
+    <span class='normal'>published date</span>,
+    <span class='foreign'>title</span>,
+    <span class='foreign'>user name</span>
+  )
+</div>
+</div>
+</body>
+</html>

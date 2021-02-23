@@ -1,0 +1,10 @@
+- actor name
+- role
+- user name
+- title
+- duration
+- synopsis
+- release date
+- genre name
+- review content
+- published date

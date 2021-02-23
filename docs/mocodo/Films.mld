@@ -1,0 +1,18 @@
+%%mocodo
+::
+plays in: #title->FILM->title, _actor name, role
+::
+
+
+:
+belongs to: #title->FILM->title, _#genre name->GENRE->genre name
+:
+FILM: title, duration, synopsis, release date
+:::
+
+
+:
+GENRE: genre name, 
+:::
+REVIEW: review content, published date, #title->FILM->title, user name
+:

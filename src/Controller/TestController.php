@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Movie;
+use App\Entity\Review;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -36,16 +37,25 @@ class TestController extends AbstractController
     {
         // 1. Créer une nouvelle entité
         $avatar = new Movie();
-        $avatar->setTitle('La Ligne Verte');
-        $avatar->setReleaseDate(new \DateTime('2005-06-20'));
+        $avatar->setTitle('Rambo 4');
+        $avatar->setReleaseDate(new \DateTime('2010-02-20'));
         $avatar->setCreatedAt(new \DateTime());
         dump($avatar);
+
+        // Ajoutons une Review à ce film
+        $review = new Review();
+        $review->setContent('Ce film est super');
+        $review->setPublishedAt(new \DateTime());
+        // Associons le film à la Review
+        $review->setMovie($avatar);
 
         // 2. On fait appel au manager d'entité de Doctrine
         $entityManager = $this->getDoctrine()->getManager();
 
         // 3. On demande au Manager de se préparer à ajouter notre objet en BDD
         $entityManager->persist($avatar);
+        // On persist aussi la review
+        $entityManager->persist($review);
 
         // 4. Demande au Manager de sauvegarder l'objet en base
         // => requête SLQ exécutée
