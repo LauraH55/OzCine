@@ -8,7 +8,12 @@
 
 <h1>{{ movie.title }}</h1>
 
-<p>Genres : ...</p>
+<h2>Genres : </h2>
+<ul>
+    {% for genre in movie.genres %}
+        <li>{{ genre.name }}</li>
+    {% endfor %}
+</ul>
 
 <p>Sorti en {{ movie.releaseDate|date('Y') }}</p>
 
@@ -20,6 +25,13 @@
 <ul>
     {% for review in movie.reviews %}
         <li>{{ review.content }}</li>
+    {% endfor %}
+</ul>
+
+<h2>Casting</h2>
+<ul>
+    {% for casting in movie.castings|sort((a, b) => a.creditOrder <=> b.creditOrder) %}
+        <li>Rôle : {{ casting.role }} joué par {{ casting.person.firstname }} {{ casting.person.lastname }}</li>
     {% endfor %}
 </ul>
 

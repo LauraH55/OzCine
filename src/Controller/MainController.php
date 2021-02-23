@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Movie;
+use App\Repository\CastingRepository;
 use App\Repository\MovieRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -33,8 +34,10 @@ class MainController extends AbstractController
      */
     public function movieShow(Movie $movie)
     {
+       
         return $this->render('main/movie_show.html.twig', [
             'movie' => $movie,
+            
         ]);
     }
 
