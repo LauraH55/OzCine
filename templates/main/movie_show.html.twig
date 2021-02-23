@@ -1,0 +1,26 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    {{ movie.title }}
+{% endblock %}
+
+{% block body %}
+
+<h1>{{ movie.title }}</h1>
+
+<p>Genres : ...</p>
+
+<p>Sorti en {{ movie.releaseDate|date('Y') }}</p>
+
+<hr>
+
+<h2>Critiques</h2>
+
+{# Les Reviews contenus dans $movie->getReviews() #}
+<ul>
+    {% for review in movie.reviews %}
+        <li>{{ review.content }}</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

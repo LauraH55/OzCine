@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tous les films{% endblock %}
+
+{% block body %}
+
+<h1>Tous les films</h1>
+
+<ul>
+    {% for movie in movies %}
+    <li><a href="{{ path('movie_show', {id: movie.id}) }}">{{ movie.title }}</a> ({{ movie.releaseDate|date('Y') }})</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
