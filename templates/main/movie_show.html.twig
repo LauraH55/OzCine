@@ -8,12 +8,10 @@
 
 <h1>{{ movie.title }}</h1>
 
-<h2>Genres : </h2>
-<ul>
+<p>Genres :
     {% for genre in movie.genres %}
-        <li>{{ genre.name }}</li>
-    {% endfor %}
-</ul>
+        {{ genre.name }}{% if loop.last %}.{% else %}, {% endif %}
+    {% endfor %}</p>
 
 <p>Sorti en {{ movie.releaseDate|date('Y') }}</p>
 
@@ -30,8 +28,10 @@
 
 <h2>Casting</h2>
 <ul>
-    {% for casting in movie.castings|sort((a, b) => a.creditOrder <=> b.creditOrder) %}
-        <li>Rôle : {{ casting.role }} joué par {{ casting.person.firstname }} {{ casting.person.lastname }}</li>
+    {# Tri depuis Twig (PHP) #}
+    {# {% for casting in movie.castings|sort((a, b) => a.creditOrder <=> b.creditOrder) %} #}
+    {% for casting in movie.castings %}
+        <li>Rôle : <b>{{ casting.role }}</b> joué par <i>{{ casting.person.firstname }} {{ casting.person.lastname }}</i> ({{ casting.creditOrder }})</li>
     {% endfor %}
 </ul>
 
