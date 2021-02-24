@@ -9,6 +9,7 @@ use App\Entity\Review;
 use App\Entity\Casting;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Faker\Factory;
 
 /**
  * Classe de Fixture 
@@ -20,13 +21,14 @@ class AppFixtures extends Fixture
     // On règle nos valeurs ici
     const NB_GENRES = 20;
     const NB_MOVIES = 10;
-    const NB_CASTINGS = 50;
+    const NB_CASTINGS = 15;
     const NB_PERSONS = 20;
     const NB_REVIEWS = 8;
     
 
     public function load(ObjectManager $manager)
     {   
+        $faker = Factory::create('fr_FR');
 
         // Genres
         // Un tableau pour stocker nos genres
@@ -35,7 +37,7 @@ class AppFixtures extends Fixture
          for ($i=1; $i <= self::NB_GENRES; $i++) {
             // Un genre
             $genre = new Genre();
-            $genre->setName('Genre '.$i);
+            $genre->setName($faker->word());
 
             // On ajoute le genre à la liste
             $genresList[] = $genre;
@@ -49,8 +51,8 @@ class AppFixtures extends Fixture
 
             // Une personne 
             $person = new Person();
-            $person->setFirstname('Prénom ' .$i);
-            $person->setLastname('Nom ' .$i);
+            $person->setFirstname($faker->firstName());
+            $person->setLastname($faker->lastName());
             $person->setCreatedAt(new \DateTime());
 
             $personsList[] = $person;
@@ -66,7 +68,7 @@ class AppFixtures extends Fixture
         for ($i=1; $i <= self::NB_MOVIES; $i++) { 
             // Un film
             $movie = new Movie();
-            $movie->setTitle('Film '.$i);
+            $movie->setTitle($faker->catchPhrase());
             // Génère un timestamp aléatoire de 1926 à maintenant
             $movie->setReleaseDate(new \DateTime('@'.rand(-1383899604, time())));
             $movie->setCreatedAt(new \DateTime());
@@ -82,7 +84,7 @@ class AppFixtures extends Fixture
                 $casting = new Casting();
                 $casting->setMovie($movie);
                 $casting->setPerson($personsList[mt_rand(0, self::NB_PERSONS - 1)]);
-                $casting->setRole('Role ' .$j);
+                $casting->setRole($faker->jobTitle());
                 $casting->setCreditOrder($j);
 
                 // On le persist
@@ -95,7 +97,7 @@ class AppFixtures extends Fixture
                 // Une review
                 $review = new Review();
                 $review->setMovie($movie);
-                $review->setContent('Lorem Ipsum');
+                $review->setContent($faker->sentence());
                 $review->setPublishedAt(new \DateTime());
         
                 // On le persist
