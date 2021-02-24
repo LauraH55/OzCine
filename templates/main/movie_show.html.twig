@@ -30,7 +30,7 @@
 <ul>
     {# Tri depuis Twig (PHP) #}
     {# {% for casting in movie.castings|sort((a, b) => a.creditOrder <=> b.creditOrder) %} #}
-    {% for casting in movie.castings %}
+    {% for casting in castings %}
         <li>Rôle : <b>{{ casting.role }}</b> joué par <i>{{ casting.person.firstname }} {{ casting.person.lastname }}</i> ({{ casting.creditOrder }})</li>
     {% endfor %}
 </ul>

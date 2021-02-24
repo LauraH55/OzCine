@@ -19,7 +19,8 @@ class MainController extends AbstractController
     public function home(MovieRepository $movieRepository): Response
     {
         // Tous les films par ordre alphabétique
-        $movies = $movieRepository->findBy([], ['title' => 'ASC']);
+        // $movies = $movieRepository->findBy([], ['title' => 'ASC']);
+        $movies = $movieRepository->findAllOrderedByTitleAsc();
 
 
         return $this->render('main/home.html.twig', [
@@ -32,11 +33,18 @@ class MainController extends AbstractController
      * 
      * @Route("/movie/{id}", name="movie_show")
      */
-    public function movieShow(Movie $movie)
+    public function movieShow(Movie $movie, CastingRepository $castingRepository)
     {
-       
+        // On peut également récupérer les castings depuis le contrôleur
+        // plutôt que de laisser Doctrine le faire depuis Twig
+        // Ici, on va chercher les objets de type Casting dont le film est $movie
+        // $castings = $castingRepository->findBy(['movie' => $movie], ['creditOrder' => 'ASC']);
+        $castings = $castingRepository->findAllByMovieJoinedToPerson($movie);
+        // dump($castings);
+
         return $this->render('main/movie_show.html.twig', [
             'movie' => $movie,
+            'castings' => $castings,
             
         ]);
     }
