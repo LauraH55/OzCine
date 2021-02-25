@@ -10,6 +10,7 @@ use App\Entity\Casting;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use App\DataFixtures\Provider\MovieDbProvider;
+use Faker\Factory;
 
 /**
  * Classe de Fixture
@@ -30,8 +31,10 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        // Instanciation du Provider
-        $movieDbProvider = new MovieDbProvider();
+        $faker = Factory::create('fr_FR');
+
+        // Fourniture de notre Provider à Faker
+        $faker->addProvider(new MovieDbProvider());
         
         // Genres
         // Un tableau pour stocker nos genres
@@ -40,7 +43,9 @@ class AppFixtures extends Fixture
         for ($i = 1; $i <= self::NB_GENRES; $i++) {
             // Un genre
             $genre = new Genre();
-            $genre->setName($movieDbProvider->movieGenre());
+            // Modifier unique() de Faker
+            // @see https://fakerphp.github.io/#modifiers
+            $genre->setName($faker->unique()->movieGenre());
 
             // On ajoute le genre à la liste
             // /!\ Attention on push à partir de l'index 0
@@ -55,8 +60,8 @@ class AppFixtures extends Fixture
 
         for ($i = 1; $i <= self::NB_PERSONS; $i++) {
             $person = new Person();
-            $person->setFirstname('Prénom '.$i);
-            $person->setLastname('Nom '.$i);
+            $person->setFirstname($faker->firstName());
+            $person->setLastname($faker->lastName());
             // On persist
             $manager->persist($person);
             // On stocke la personne pour usage ultérieur
@@ -71,9 +76,9 @@ class AppFixtures extends Fixture
         for ($i = 1; $i <= self::NB_MOVIES; $i++) { 
             // Un film
             $movie = new Movie();
-            $movie->setTitle($movieDbProvider->movieTitle());
+            $movie->setTitle($faker->unique()->movieTitle());
             // Génère un timestamp aléatoire de 1926 à maintenant
-            $movie->setReleaseDate(new \DateTime('@'.rand(-1383899604, time())));
+            $movie->setReleaseDate($faker->dateTimeBetween('-100 years'));
             $movie->setCreatedAt(new \DateTime());
 
             // On associe de 1 à 3 genres au hasard
@@ -96,7 +101,7 @@ class AppFixtures extends Fixture
         // Les reviews
         for ($i = 1; $i <= self::NB_REVIEWS; $i++) {
             $review = new Review();
-            $review->setContent('Lorem ipsum dolor sit amet... ' . $i);
+            $review->setContent($faker->text());
             $review->setPublishedAt(new \DateTime());
 
             // On va chercher un film au hasard dans la liste des films créée au-dessus
@@ -111,8 +116,8 @@ class AppFixtures extends Fixture
         // Les castings
         for ($i = 1; $i < self::NB_CASTINGS; $i++) {
             $casting = new Casting();
-            $casting->setRole('rôle '.$i);
-            $casting->setCreditOrder(mt_rand(1, 100));
+            $casting->setRole($faker->name());
+            $casting->setCreditOrder($faker->numberBetween(1, 10));;
 
             // On va chercher un film au hasard dans la liste des films créée au-dessus
             // Variante avec mt_rand et count
