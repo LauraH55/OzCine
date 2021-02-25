@@ -9,6 +9,8 @@
 <ul>
     {% for movie in movies %}
     <li><a href="{{ path('movie_show', {id: movie.id}) }}">{{ movie.title }}</a> ({{ movie.releaseDate|date('Y') }})</li>
+    {% else %}
+    <li>Aucun film trouvé pour <i>{{ app.request.query.get('search') }}</i></li>
     {% endfor %}
 </ul>
 

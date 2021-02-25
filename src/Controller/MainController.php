@@ -8,19 +8,25 @@ use App\Repository\MovieRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 
 class MainController extends AbstractController
 {
     /**
      * Page d'accueil
      * 
+     * Le paramètre de recherche est dans le paramètre GET ?search=xxx
+     * 
      * @Route("/", name="home")
      */
-    public function home(MovieRepository $movieRepository): Response
+    public function home(MovieRepository $movieRepository, Request $request): Response
     {
+        // Le paramètre GET à récupérer
+        $search = $request->query->get('search');
+        
         // Tous les films par ordre alphabétique
         // $movies = $movieRepository->findBy([], ['title' => 'ASC']);
-        $movies = $movieRepository->findAllOrderedByTitleAsc();
+        $movies = $movieRepository->findAllOrderedByTitleAsc($search);
 
 
         return $this->render('main/home.html.twig', [

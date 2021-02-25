@@ -14,6 +14,14 @@
         {% endblock %}
     </head>
     <body>
+        <header>
+            <div>oZ'iné</div>
+            <form action="{{ path('home') }}">
+                <input type="text" name="search" placeholder="Un titre de film" value="{{ app.request.query.get('search') ?? '' }}">
+                <button type="submit">Rechercher</button>
+                <a href="{{ path('home') }}">Annuler</a>
+            </form>
+        </header>
         {% block body %}{% endblock %}
     </body>
 </html>

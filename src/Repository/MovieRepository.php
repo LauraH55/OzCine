@@ -24,13 +24,21 @@ class MovieRepository extends ServiceEntityRepository
      * 
      * @return Movie[] Returns an array of Movie objects
      */
-    public function findAllOrderedByTitleAsc()
+    public function findAllOrderedByTitleAsc($search = null)
     {
-        return $this->createQueryBuilder('movie')
-            ->orderBy('movie.title', 'ASC')
-            ->getQuery()
-            ->getResult()
-        ;
+        // Requête de base
+        $qb = $this->createQueryBuilder('m')
+            ->orderBy('m.title', 'ASC');
+
+        // Si mot-clé présent, on ajoute la condition WHERE
+        if (null !== $search) {
+
+            $qb->where('m.title LIKE :search')
+                ->setParameter('search', '%'.$search.'%');
+        }
+
+
+        return $qb->getQuery()->getResult();
     }
 
     /**
