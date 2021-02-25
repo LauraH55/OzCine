@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Movie;
+use App\Form\ReviewType;
 use App\Repository\CastingRepository;
 use App\Repository\MovieRepository;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,6 +22,7 @@ class MainController extends AbstractController
      */
     public function home(MovieRepository $movieRepository, Request $request): Response
     {
+
         // Le paramètre GET à récupérer
         $search = $request->query->get('search');
         
@@ -52,6 +54,38 @@ class MainController extends AbstractController
             'movie' => $movie,
             'castings' => $castings,
             
+        ]);
+    }
+
+    /**
+     * Page formulaire d'ajout d'une critique 
+     * 
+     * @Route("/review/add", name="review_add")
+     */
+    public function addReview(Request $request): Response
+    {
+        // Création d'un formulaire d'ajout d'une review
+        $form = $this->createForm(ReviewType::class);
+
+        //2. Demande au formulaire d'inspecter la requête 
+        $form->handleRequest($request);
+
+        // Le formulaire est-il soumis et valide ? 
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            // On récupère les données du form
+            $reviewData = $form->getData();
+
+            // Fait quelque chose => se connecter
+            dd($reviewData);
+
+            // On redirige vers ....
+            // return $this->redirectToRoute(...)
+        }
+
+        return $this->render('main/form_review.html.twig', [
+            // On envoie au template "une vue de formulaire" via createView()
+            'form' => $form->createView(),
         ]);
     }
 
