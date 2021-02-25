@@ -32,6 +32,8 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('fr_FR');
+        // Toujours les mêmes données
+        // $faker->seed('Oz');
 
         // Fourniture de notre Provider à Faker
         $faker->addProvider(new MovieDbProvider());
