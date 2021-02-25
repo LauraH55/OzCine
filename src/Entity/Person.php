@@ -47,6 +47,7 @@ class Person
     public function __construct()
     {
         $this->castings = new ArrayCollection();
+        $this->createdAt = new \DateTime();
     }
 
     public function getId(): ?int

@@ -194,7 +194,9 @@ class Movie
     }
 
     public function addGenre(Genre $genre): self
-    {
+    {   
+        // On vérifie que le genre qu'on veut associer ici
+        // n'existe pas déjà dans la Collection des genres de ce film
         if (!$this->genres->contains($genre)) {
             $this->genres[] = $genre;
         }
