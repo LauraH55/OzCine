@@ -77,10 +77,10 @@ class MainController extends AbstractController
             $reviewData = $form->getData();
 
             // Fait quelque chose => se connecter
-            dd($reviewData);
+            //dd($reviewData);
 
             // On redirige vers ....
-            // return $this->redirectToRoute(...)
+            return $this->redirectToRoute('home');
         }
 
         return $this->render('main/form_review.html.twig', [
