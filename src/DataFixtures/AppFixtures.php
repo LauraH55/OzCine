@@ -9,6 +9,7 @@ use App\Entity\Review;
 use App\Entity\Casting;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use App\DataFixtures\Provider\MovieDbProvider;
 
 /**
  * Classe de Fixture
@@ -29,15 +30,17 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
+        // Instanciation du Provider
+        $movieDbProvider = new MovieDbProvider();
+        
         // Genres
-
         // Un tableau pour stocker nos genres
         $genresList = [];
 
         for ($i = 1; $i <= self::NB_GENRES; $i++) {
             // Un genre
             $genre = new Genre();
-            $genre->setName('Genre '.$i);
+            $genre->setName($movieDbProvider->movieGenre());
 
             // On ajoute le genre à la liste
             // /!\ Attention on push à partir de l'index 0
@@ -68,7 +71,7 @@ class AppFixtures extends Fixture
         for ($i = 1; $i <= self::NB_MOVIES; $i++) { 
             // Un film
             $movie = new Movie();
-            $movie->setTitle('Film '.$i);
+            $movie->setTitle($movieDbProvider->movieTitle());
             // Génère un timestamp aléatoire de 1926 à maintenant
             $movie->setReleaseDate(new \DateTime('@'.rand(-1383899604, time())));
             $movie->setCreatedAt(new \DateTime());
