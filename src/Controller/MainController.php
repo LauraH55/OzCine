@@ -60,12 +60,14 @@ class MainController extends AbstractController
     /**
      * Page formulaire d'ajout d'une critique 
      * 
+     * @todo Lier la critique à un film donné
+     * 
      * @Route("/review/add", name="review_add")
      */
     public function addReview(Request $request): Response
     {
         // Création d'un formulaire d'ajout d'une review
-        $form = $this->createForm(ReviewType::class);
+        $form = $this->createForm(ReviewType::class, ['date' => new \DateTime()]);
 
         //2. Demande au formulaire d'inspecter la requête 
         $form->handleRequest($request);

@@ -7,7 +7,13 @@
 <h1>Ajouter une critique</h1>
 
 {# Rendu du formulaire, tout-en-un via form() #}
-{{ form(form, {attr: {class: 'review__form', novalidate: 'novalidate'}}) }}
+{{ form_start(form, {attr: {novalidate: 'novalidate', class: 'mb-5'}}) }}
+    {# Génère tous les chaps du form #}
+    {{ form_widget(form) }}
+
+    <button type="submit" class="btn btn-success">Ajouter</button>
+
+{{ form_end(form) }}
 
 
 {% endblock %}
