@@ -57,11 +57,17 @@ class Movie
      */
     private $castings;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Team::class, mappedBy="movie")
+     */
+    private $teams;
+
     public function __construct()
     {
         $this->reviews = new ArrayCollection();
         $this->genres = new ArrayCollection();
         $this->castings = new ArrayCollection();
+        $this->teams = new ArrayCollection();
     }
 
     /**
@@ -235,6 +241,36 @@ class Movie
             // set the owning side to null (unless already changed)
             if ($casting->getMovie() === $this) {
                 $casting->setMovie(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Team[]
+     */
+    public function getTeams(): Collection
+    {
+        return $this->teams;
+    }
+
+    public function addTeam(Team $team): self
+    {
+        if (!$this->teams->contains($team)) {
+            $this->teams[] = $team;
+            $team->setMovie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeam(Team $team): self
+    {
+        if ($this->teams->removeElement($team)) {
+            // set the owning side to null (unless already changed)
+            if ($team->getMovie() === $this) {
+                $team->setMovie(null);
             }
         }
 

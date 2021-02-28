@@ -44,10 +44,16 @@ class Person
      */
     private $updatedAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Team::class, mappedBy="person")
+     */
+    private $teams;
+
     public function __construct()
     {
         $this->castings = new ArrayCollection();
         $this->createdAt = new \DateTime();
+        $this->teams = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -129,6 +135,36 @@ class Person
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Team[]
+     */
+    public function getTeams(): Collection
+    {
+        return $this->teams;
+    }
+
+    public function addTeam(Team $team): self
+    {
+        if (!$this->teams->contains($team)) {
+            $this->teams[] = $team;
+            $team->setPerson($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeam(Team $team): self
+    {
+        if ($this->teams->removeElement($team)) {
+            // set the owning side to null (unless already changed)
+            if ($team->getPerson() === $this) {
+                $team->setPerson(null);
+            }
+        }
 
         return $this;
     }
