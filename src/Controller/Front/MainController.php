@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Front;
+
 
 use App\Entity\Movie;
 use App\Form\ReviewType;
@@ -31,7 +32,7 @@ class MainController extends AbstractController
         $movies = $movieRepository->findAllOrderedByTitleAsc($search);
 
 
-        return $this->render('main/home.html.twig', [
+        return $this->render('front/home.html.twig', [
             'movies' => $movies,
         ]);
     }
@@ -50,7 +51,7 @@ class MainController extends AbstractController
         $castings = $castingRepository->findAllByMovieJoinedToPerson($movie);
         // dump($castings);
 
-        return $this->render('main/movie_show.html.twig', [
+        return $this->render('front/movie_show.html.twig', [
             'movie' => $movie,
             'castings' => $castings,
             
@@ -80,12 +81,13 @@ class MainController extends AbstractController
 
             // Fait quelque chose => se connecter
             dd($reviewData);
+            
 
             // On redirige vers ....
             return $this->redirectToRoute('home');
         }
 
-        return $this->render('main/form_review.html.twig', [
+        return $this->render('front/form_review.html.twig', [
             // On envoie au template "une vue de formulaire" via createView()
             'form' => $form->createView(),
         ]);

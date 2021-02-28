@@ -1,0 +1,40 @@
+{% extends "front/base.html.twig" %}
+
+{% block title %}
+    {{ movie.title }}
+{% endblock %}
+
+{% block body %}
+    
+<h1>{{ movie.title }}</h1>
+
+{# Voir la méthode __toString() dans Post.php pour contourner le bug d'affichage post.author #}
+<p>Sorti en {{ movie.releaseDate|date('Y') }}</p>
+
+<p>Genres :
+    {% for genre in movie.genres %}
+        {{ genre.name }}{% if loop.last %}.{% else %}, {% endif %}
+    {% endfor %}</p>
+
+    <hr>
+
+<h2>Critiques</h2>
+<p><a class="btn btn-sm btn-primary" href="">Ajouter une critique</a></p>
+
+{# Les Reviews contenus dans $movie->getReviews() #}
+<ul>
+    {% for review in movie.reviews %}
+        <li>{{ review.content }}</li>
+    {% endfor %}
+</ul>
+
+<h2>Casting</h2>
+<ul>
+    {# Tri depuis Twig (PHP) #}
+    {# {% for casting in movie.castings|sort((a, b) => a.creditOrder <=> b.creditOrder) %} #}
+    {% for casting in castings %}
+        <li>Rôle : <b>{{ casting.role }}</b> joué par <i>{{ casting.person.firstname }} {{ casting.person.lastname }}</i> ({{ casting.creditOrder }})</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

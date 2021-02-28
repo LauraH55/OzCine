@@ -1,0 +1,22 @@
+{% extends "front/base.html.twig" %}
+
+{% block title %}
+    Edition d'un film
+{% endblock %}
+
+{% block body %}
+
+<h1>Editer un film</h1>
+<h2>{{ movie.title }}</h2>
+
+{# Rendu du formulaire, tout-en-un via form() #}
+{{ form_start(form, {attr: {novalidate: 'novalidate', class: 'mb-5'}}) }}
+    {# Génère tous les chaps du form #}
+    {{ form_widget(form) }}
+
+    <button type="submit" class="btn btn-success">Modifier</button>
+
+{{ form_end(form) }}
+
+
+{% endblock %}

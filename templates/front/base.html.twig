@@ -13,7 +13,8 @@
             <form action="{{ path('home') }}">
                 <input type="text" name="search" placeholder="Un titre de film" value="{{ app.request.query.get('search') ?? '' }}">
                 <button type="submit">Rechercher</button>
-                <a href="{{ path('home') }}">Annuler</a>
+                <a class="btn btn-sm btn-primary" href="{{ path('home') }}">Annuler</a>
+                <a class="btn btn-sm btn-primary" href="{{ path('admin_home') }}">Admin</a>
             </form>
         </header>
         <div class="container">

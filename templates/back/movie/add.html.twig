@@ -1,0 +1,19 @@
+{% extends 'front/base.html.twig' %}
+
+{% block title %}Ajouter un film{% endblock %}
+
+{% block body %}
+
+<h1>Ajouter un film</h1>
+
+{# Rendu du formulaire, tout-en-un via form() #}
+{{ form_start(form, {attr: {novalidate: 'novalidate', class: 'mb-5'}}) }}
+    {# Génère tous les chaps du form #}
+    {{ form_widget(form) }}
+
+    <button type="submit" class="btn btn-success">Ajouter</button>
+
+{{ form_end(form) }}
+
+
+{% endblock %}

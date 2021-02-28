@@ -68,6 +68,7 @@ class Movie
         $this->genres = new ArrayCollection();
         $this->castings = new ArrayCollection();
         $this->teams = new ArrayCollection();
+        $this->createdAt = new \DateTime();
     }
 
     /**
