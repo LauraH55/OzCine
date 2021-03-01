@@ -9,7 +9,7 @@
     </head>
     <body>
         <header class="container">
-            <div>oZ'iné</div>
+            <div><a href="{{ path('home') }}">oZ'iné</a></div>
             <form action="{{ path('home') }}">
                 <input type="text" name="search" placeholder="Un titre de film" value="{{ app.request.query.get('search') ?? '' }}">
                 <button type="submit">Rechercher</button>

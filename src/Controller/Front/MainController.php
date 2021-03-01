@@ -32,7 +32,7 @@ class MainController extends AbstractController
         $movies = $movieRepository->findAllOrderedByTitleAsc($search);
 
 
-        return $this->render('front/home.html.twig', [
+        return $this->render('front/main/home.html.twig', [
             'movies' => $movies,
         ]);
     }
@@ -51,7 +51,7 @@ class MainController extends AbstractController
         $castings = $castingRepository->findAllByMovieJoinedToPerson($movie);
         // dump($castings);
 
-        return $this->render('front/movie_show.html.twig', [
+        return $this->render('front/main/movie_show.html.twig', [
             'movie' => $movie,
             'castings' => $castings,
             
@@ -87,7 +87,7 @@ class MainController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        return $this->render('front/form_review.html.twig', [
+        return $this->render('front/main/form_review.html.twig', [
             // On envoie au template "une vue de formulaire" via createView()
             'form' => $form->createView(),
         ]);
