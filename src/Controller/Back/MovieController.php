@@ -141,18 +141,28 @@ class MovieController extends AbstractController
     }
 
     /**
-     * Supprimer un article
+     * Supprimer un film
      * 
      * ParamConverter => si $movie = null, alors notre contrôleur est exécuté
      * 
-     * @Route("/admin/delete/{id<\d+>}", name="admin_delete_movie", methods={"GET"})
+     * @Route("/admin/delete/{id<\d+>}", name="admin_delete_movie", methods={"DELETE"})
      */
-    public function delete(Movie $movie, EntityManagerInterface $entityManager)
+    public function delete(Request $request, Movie $movie, EntityManagerInterface $entityManager)
     {
         // 404 ?
         // ParamConverter => si $movie = null, alors notre contrôleur est exécuté
         if (null === $movie) {
             throw $this->createNotFoundException('Film non trouvé.');
+        }
+
+        // @see https://symfony.com/doc/current/security/csrf.html#generating-and-checking-csrf-tokens-manually
+        // On réupère le nom du token qu'on a déposé dans le form
+        $submittedToken = $request->request->get('token');
+
+        // 'delete-movie' is the same value used in the template to generate the token
+        if (! $this->isCsrfTokenValid('delete-movie', $submittedToken)) {
+
+            throw $this->createAccessDeniedException('Action non autorisée.');
         }
 
          // Via l'injection, on peut utiliser directement $entityManager

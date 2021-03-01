@@ -52,7 +52,7 @@ class Movie
     private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Review::class, mappedBy="movie")
+     * @ORM\OneToMany(targetEntity=Review::class, mappedBy="movie", cascade={"remove"})
      */
     private $reviews;
 
@@ -63,7 +63,7 @@ class Movie
     private $genres;
 
     /**
-     * @ORM\OneToMany(targetEntity=Casting::class, mappedBy="movie")
+     * @ORM\OneToMany(targetEntity=Casting::class, mappedBy="movie", cascade={"remove"})
      */
     private $castings;
 
