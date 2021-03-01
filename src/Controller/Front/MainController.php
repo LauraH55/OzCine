@@ -19,7 +19,7 @@ class MainController extends AbstractController
      * 
      * Le paramètre de recherche est dans le paramètre GET ?search=xxx
      * 
-     * @Route("/", name="home")
+     * @Route("/", name="home", methods={"GET"})
      */
     public function home(MovieRepository $movieRepository, Request $request): Response
     {
@@ -40,10 +40,15 @@ class MainController extends AbstractController
     /**
      * Page d'un film
      * 
-     * @Route("/movie/{id}", name="movie_show")
+     * @Route("/movie/{id<\d+>}", name="movie_show", methods={"GET"})
      */
-    public function movieShow(Movie $movie, CastingRepository $castingRepository)
+    public function movieShow(Movie $movie = null, CastingRepository $castingRepository)
     {
+        // 404 ?
+        if ($movie === null) {
+            throw $this->createNotFoundException('Film non trouvé.');
+        }
+        
         // On peut également récupérer les castings depuis le contrôleur
         // plutôt que de laisser Doctrine le faire depuis Twig
         // Ici, on va chercher les objets de type Casting dont le film est $movie
@@ -63,7 +68,7 @@ class MainController extends AbstractController
      * 
      * @todo Lier la critique à un film donné
      * 
-     * @Route("/review/add", name="review_add")
+     * @Route("/review/add", name="review_add", methods={"GET", "POST"})
      */
     public function addReview(Request $request): Response
     {

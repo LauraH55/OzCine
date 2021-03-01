@@ -1,0 +1,14 @@
+{% extends "front/base.html.twig" %}
+
+{% block title %}
+    {{ exception.message }}
+{% endblock %}
+
+{% block body %}
+
+<img src="https://cdn.pixabay.com/photo/2017/01/31/14/50/comic-characters-2024745_960_720.png" alt="" width="300">
+
+<h1>{{ exception.message }}</h1>
+<h2>{{ exception.statusCode }} {{ exception.statusText }}</h2>
+
+{% endblock %}
