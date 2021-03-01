@@ -1,3 +1,12 @@
+/*
+    Scrollbar verticale toujours visible
+    (évite les mouvements quand on passe d'une page sans scrollbar
+    à une page avec)
+*/
+html {
+    overflow-y: scroll;
+}
+
 label.required {
     color: #dc3545;
 }

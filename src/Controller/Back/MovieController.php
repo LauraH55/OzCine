@@ -15,9 +15,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class MovieController extends AbstractController
 {
     /**
+     * Liste des films 
+     * 
      * @Route("/admin", name="admin_home")
      */
-    public function bread(MovieRepository $movieRepository, Request $request): Response
+    public function browse(MovieRepository $movieRepository, Request $request): Response
     {
         // List = bread 
         // Le paramètre GET à récupérer
