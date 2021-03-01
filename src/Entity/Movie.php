@@ -58,7 +58,6 @@ class Movie
 
     /**
      * @ORM\ManyToMany(targetEntity=Genre::class)
-     * @ORM\OrderBy({"name"="ASC"})
      * @Assert\Count(min=1)
      */
     private $genres;
