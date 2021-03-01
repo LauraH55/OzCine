@@ -19,16 +19,26 @@ class MovieType extends AbstractType
         $builder
             ->add('title', TextType::class, [
                 'label' => 'Titre',
-                'constraints' => new NotBlank(),
             ])
             ->add('releaseDate', DateType::class, [
                 'widget' => 'choice',
                 'label' => 'Ce film est sorti le',
                 'years' => range(date('Y'), date('Y') - 70),
             ])
+
+            // Si on le laisse deviner, via "null" en second argument
+            // Symfony règle toutes les options pour nous,
+            // et notamment le 'multiple' => true
+            // car genres = ToMany = ArrayCollection
+            // Il nous reste juste le 'choice_label' à régler
+
+            // Si on configure tout à la main,
+            // on doit alors tout préciser nous-même
             ->add('genres', EntityType::class, [
                 'class' => Genre::class,
+                // Le plus important pour une relation TO MANY, une collection 
                 'multiple'=>true,
+                // En checkboses, meilleur UX
                 'expanded'=>true,
                 'choice_label' => 'name',
             ])

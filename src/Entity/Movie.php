@@ -5,9 +5,15 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MovieRepository")
+ * @UniqueEntity("title")
+ * @see https://symfony.com/doc/current/reference/constraints/UniqueEntity.html
  */
 class Movie
 {
@@ -24,11 +30,14 @@ class Movie
 
     /**
      * @ORM\Column(type="string", length=100, unique=true)
+     * @Assert\NotBlank
+     * 
      */
     private $title;
 
     /**
      * @ORM\Column(type="date")
+     * @Assert\NotBlank
      */
     private $releaseDate;
 
@@ -49,6 +58,8 @@ class Movie
 
     /**
      * @ORM\ManyToMany(targetEntity=Genre::class)
+     * @ORM\OrderBy({"name"="ASC"})
+     * @Assert\Count(min=1)
      */
     private $genres;
 

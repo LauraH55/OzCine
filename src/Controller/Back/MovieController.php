@@ -17,7 +17,7 @@ class MovieController extends AbstractController
     /**
      * Liste des films 
      * 
-     * @Route("/admin", name="admin_home")
+     * @Route("/admin", name="admin_home", methods={"GET"})
      */
     public function browse(MovieRepository $movieRepository, Request $request): Response
     {
@@ -60,11 +60,13 @@ class MovieController extends AbstractController
      *
      * @Route("/admin/add", name="admin_add_movie", methods={"GET", "POST"})
      */
-    public function add(Request $request): Response
+    public function add(Request $request, EntityManagerInterface $entityManager): Response
     {   
+        // L'entité à créer
         $movie= new Movie();
 
         // Création d'un formulaire d'ajout d'un film
+        // Le mapping se fait entre le formulaire et l'entité
         $form = $this->createForm(MovieType::class, $movie);
 
         //2. Demande au formulaire d'inspecter la requête 
@@ -78,7 +80,7 @@ class MovieController extends AbstractController
             //dd($reviewData);
 
             // On demande au Manager de sauvegarder l'entité
-            $entityManager = $this->getDoctrine()->getManager();
+            
             $entityManager->persist($movie);
             $entityManager->flush();
 
