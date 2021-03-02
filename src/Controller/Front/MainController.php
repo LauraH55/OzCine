@@ -98,17 +98,6 @@ class MainController extends AbstractController
         ]);
     }
 
-    /**
-     * Déconnexion, utilise pour le logout
-     * Cette méthode ne sera jamais appelée
-     * car route intercepté par un évènement de Symfony
-     * 
-     * @Route("/logout", name="user_logout")
-     */
-    public function logout()
-    {
-        dd('Ce code ne devrait jamais être exécuté...');
-    }
 
 
 

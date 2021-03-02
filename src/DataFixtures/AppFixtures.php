@@ -2,6 +2,8 @@
 
 namespace App\DataFixtures;
 
+use Faker\Factory;
+use App\Entity\User;
 use App\Entity\Genre;
 use App\Entity\Movie;
 use App\Entity\Person;
@@ -10,7 +12,6 @@ use App\Entity\Casting;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use App\DataFixtures\Provider\MovieDbProvider;
-use Faker\Factory;
 
 /**
  * Classe de Fixture
@@ -37,6 +38,21 @@ class AppFixtures extends Fixture
 
         // Fourniture de notre Provider à Faker
         $faker->addProvider(new MovieDbProvider());
+
+        // Utilisateurs
+        $user = new User();
+        $user->setEmail('user@user.com');
+        $user->setPassword('$argon2id$v=19$m=65536,t=4,p=1$E6eVPobLnnNG+DRGtjb5xQ$GDy87lQ1jEn6hpvSuYgzFy8+xPCXA2iB4zYFpmom0PI');
+        $user->setRoles(['ROLE_USER']);
+        $manager->persist($user);
+
+        $admin = new User();
+        $admin->setEmail('admin@admin.com');
+        // admin
+        $admin->setPassword('$argon2id$v=19$m=65536,t=4,p=1$vB/QqWTUKbdlGBB4/XKnnw$ZaW222CFopGLs8Y86UksdMJ0E+YQAr2+9JC7kFhvBlU');
+        $admin->setRoles(['ROLE_ADMIN']);
+        $manager->persist($admin);
+        
         
         // Genres
         // Un tableau pour stocker nos genres
