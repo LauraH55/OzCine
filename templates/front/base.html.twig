@@ -23,6 +23,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('admin_home') }}">Admin</a>
                     </li>
+                    {% if is_granted('ROLE_USER') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ app.user.username  }}">User</a>
+                    </li>
+                    {% endif %}
                 </ul>
                 <form class="form-inline my-2 my-lg-0" action="{{ path('home') }}">
                     <input class="form-control mr-sm-2" type="search" name="search" placeholder="Un titre de film" value="{{ app.request.query.get('search') ?? '' }}" aria-label="Search">

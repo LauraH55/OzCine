@@ -55,8 +55,11 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         # /admin correspond à mon lien admin du MainController
-        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/movie/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin|add|edit|delete, roles: ROLE_ADMIN }
         - { path: ^/review/add, roles: ROLE_USER }
+        - { path: ^/admin|read, roles: ROLE_MANAGER }
 
     role_hierarchy:
         # ROLE ADMIN hérite de ROLE_USER
