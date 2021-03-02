@@ -35,6 +35,10 @@
         {# Sous-nav possible #}
         {% block subnav %}{% endblock %}
 
+        {% if is_granted('ROLE_ADMIN') %}
+            <p>Je suis ADMIN \o/</p>
+        {% endif %}
+
         <div class="container">
             <div class="row">
                 <div class="col">

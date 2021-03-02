@@ -57,3 +57,8 @@ security:
         # /admin correspond à mon lien admin du MainController
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/review/add, roles: ROLE_USER }
+
+    role_hierarchy:
+        # ROLE ADMIN hérite de ROLE_USER
+        # Si pertinent pour le projet
+        ROLE_ADMIN: ROLE_USER
