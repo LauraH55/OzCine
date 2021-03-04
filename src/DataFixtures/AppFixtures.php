@@ -40,11 +40,21 @@ class AppFixtures extends Fixture
         $faker->addProvider(new MovieDbProvider());
 
         // Utilisateurs
+        //! Ici pas de faker
+        // => on veut controler les données de ces 3 users
         $user = new User();
         $user->setEmail('user@user.com');
         $user->setPassword('$argon2id$v=19$m=65536,t=4,p=1$E6eVPobLnnNG+DRGtjb5xQ$GDy87lQ1jEn6hpvSuYgzFy8+xPCXA2iB4zYFpmom0PI');
         $user->setRoles(['ROLE_USER']);
         $manager->persist($user);
+
+        // MANAGER
+        $userManager = new User();
+        $userManager->setEmail('manager@manager.com');
+        // manager
+        $userManager->setPassword('$argon2id$v=19$m=65536,t=4,p=1$dWhGK3omSDcZFm855F8QpA$wPS1ylHDw5KTTESc4p4wqv/jE4Js54mP8AHbLmorXl8');
+        $userManager->setRoles(['ROLE_MANAGER']);
+        $manager->persist($userManager);
 
         $admin = new User();
         $admin->setEmail('admin@admin.com');
