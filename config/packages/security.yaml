@@ -55,13 +55,22 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         # /admin correspond à mon lien admin du MainController
-        - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/movie/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin|add|edit|delete, roles: ROLE_ADMIN }
+        # La parenthèse sert à grouper et c'est des / pas des | (ou)
+
+        # Les routes d'ajout, de modification et suppression => Admin
+        - { path: ^/admin/(add|edit|delete), roles: ROLE_ADMIN }
+        # Pour toutes les autres pages du back => Manager
+        - { path: ^/admin, roles: ROLE_MANAGER }
+        # Pour ajouter une review, il faut etre connecté en tant qu'user
         - { path: ^/review/add, roles: ROLE_USER }
-        - { path: ^/admin|read, roles: ROLE_MANAGER }
+
+        # On commence par les chemins les plus profonds, qui nécessite un rôle plus fort
+
 
     role_hierarchy:
-        # ROLE ADMIN hérite de ROLE_USER
+        # ROLE_ADMIN hérite de ROLE_MANAGER
+        # ROLE_MANAGER de ROLE_USER
         # Si pertinent pour le projet
-        ROLE_ADMIN: ROLE_USER
+        ROLE_ADMIN: ROLE_MANAGER
+        ROLE_MANAGER: ROLE_USER
+        # ROLE_ADMIN hérite donc aussi de ROLE_USER
