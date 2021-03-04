@@ -4,11 +4,13 @@ namespace App\Controller\Back;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Form\UserAddType;
+use App\Form\UserEditType;
 use App\Repository\UserRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
@@ -34,7 +36,7 @@ class UserController extends AbstractController
     public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserAddType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -69,12 +71,23 @@ class UserController extends AbstractController
     /**
      * @Route("/edit/{id}", name="user_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, User $user): Response
-    {
-        $form = $this->createForm(UserType::class, $user);
+    public function edit(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
+    {   
+        $form = $this->createForm(UserEditType::class, $user);
+        // Le mot de passe du $user existant va être écrasé par $request
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Si mot de passe du form n'est pas vide
+            // c'est qu'on veut le changer
+            if ($form->get('password')->getData() !== '') {
+                // C'est là qu'on encode le mot de passe du User (qui se trouve dans $user)
+                $hashedPassword = $passwordEncoder->encodePassword($user, $form->get('password')->getData());
+                // On réassigne le mot passe encodé dans le User
+                $user->setPassword($hashedPassword);
+            }
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('back_user_browse');

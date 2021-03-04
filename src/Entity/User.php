@@ -42,9 +42,6 @@ class User implements UserInterface
      * Propriété de la column en bdd
      * @ORM\Column(type="string")
      * 
-     * Contraintes sur le mot de passe en clair
-     * @Assert\NotBlank
-     * @Assert\Length(min=4)
      */
     private $password;
 
