@@ -5,6 +5,7 @@ namespace App\Controller\Front;
 
 use App\Entity\Movie;
 use App\Form\ReviewType;
+use App\Repository\GenreRepository;
 use App\Repository\CastingRepository;
 use App\Repository\MovieRepository;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +22,7 @@ class MainController extends AbstractController
      * 
      * @Route("/", name="home", methods={"GET"})
      */
-    public function home(MovieRepository $movieRepository, Request $request): Response
+    public function home(MovieRepository $movieRepository, Request $request, GenreRepository $genreRepository): Response
     {
 
         // Le paramètre GET à récupérer
@@ -30,10 +31,15 @@ class MainController extends AbstractController
         // Tous les films par ordre alphabétique
         // $movies = $movieRepository->findBy([], ['title' => 'ASC']);
         $movies = $movieRepository->findAllOrderedByTitleAsc($search);
+        
+         // Tous les genres
+         $genres = $genreRepository->findBy([], ['name' => 'ASC']);
 
 
         return $this->render('front/main/home.html.twig', [
             'movies' => $movies,
+            'genres' => $genres,
+
         ]);
     }
 
