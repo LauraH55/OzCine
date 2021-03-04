@@ -4,10 +4,14 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity("email")
  */
 class User implements UserInterface
 {
@@ -20,17 +24,27 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank
+     * @Assert\Email
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * Au moins un rôle
+     * @Assert\Count(min=1)
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
+     * 
+     * Propriété de la column en bdd
      * @ORM\Column(type="string")
+     * 
+     * Contraintes sur le mot de passe en clair
+     * @Assert\NotBlank
+     * @Assert\Length(min=4)
      */
     private $password;
 
