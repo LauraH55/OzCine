@@ -23,9 +23,32 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('admin_home') }}">Admin</a>
                     </li>
-                    {% if is_granted('ROLE_USER') %}
+                    {# Est-on connecté ? #}
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ app.user.username  }}">User</a>
+                        <a href="{{ path('app_logout') }}" class="btn btn-outline-success" type="button">Déconnexion</a>
+                    </li>
+                    <li class="nav-item">
+                        <span class="badge badge-secondary ml-2 mt-2">{{ app.user.email }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <span class="badge badge-secondary ml-2 mt-2">
+                        {# Libellé du rôle #}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            Administrateur
+                        {% elseif is_granted('ROLE_MANAGER') %}
+                            Manager
+                        {% elseif is_granted('ROLE_USER') %}
+                            Membre
+                        {% endif %}
+                        </span>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a href="{{ path('app_login') }}" class="btn btn-outline-primary">Connexion</a>
+                    </li>
+                    <li class="nav-item">
+                        <span class="badge badge-secondary ml-2 mt-2">Visiteur</span>
                     </li>
                     {% endif %}
                 </ul>
@@ -40,9 +63,6 @@
         {# Sous-nav possible #}
         {% block subnav %}{% endblock %}
 
-        {% if is_granted('ROLE_ADMIN') %}
-            <p>Je suis ADMIN \o/</p>
-        {% endif %}
 
         <div class="container">
             <div class="row">
