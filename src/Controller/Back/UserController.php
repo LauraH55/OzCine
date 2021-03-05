@@ -6,7 +6,9 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Form\UserAddType;
 use App\Form\UserEditType;
+use Psr\Log\LoggerInterface;
 use App\Repository\UserRepository;
+use App\Service\MessageGenerator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -33,7 +35,7 @@ class UserController extends AbstractController
     /**
      * @Route("/add", name="user_add", methods={"GET","POST"})
      */
-    public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder,MessageGenerator $messageGenerator): Response
     {
         $user = new User();
         $form = $this->createForm(UserAddType::class, $user);
@@ -48,6 +50,9 @@ class UserController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
+
+            // Flash
+            $this->addFlash('success', $messageGenerator->getHappyMessage());
 
             return $this->redirectToRoute('back_user_browse');
         }
@@ -71,7 +76,7 @@ class UserController extends AbstractController
     /**
      * @Route("/edit/{id}", name="user_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function edit(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder, LoggerInterface $logger, MessageGenerator $messageGenerator): Response
     {   
         $form = $this->createForm(UserEditType::class, $user);
         // Le mot de passe du $user existant va être écrasé par $request
@@ -89,6 +94,15 @@ class UserController extends AbstractController
             }
 
             $this->getDoctrine()->getManager()->flush();
+
+            // Let's log !
+            $logger->info('User modifié', [
+                'user' => $user->getUsername(),
+                'by' => $this->getUser()->getUsername(),
+            ]);
+
+            // Flash
+            $this->addFlash('success', $messageGenerator->getHappyMessage());
 
             return $this->redirectToRoute('back_user_browse');
         }

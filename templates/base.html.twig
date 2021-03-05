@@ -28,6 +28,34 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('admin_home') }}">Admin</a>
                     </li>
+                    {# Est-on connecté ? #}
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <li class="nav-item">
+                        <a href="{{ path('app_logout') }}" class="btn btn-outline-primary">Déconnexion</a>
+                    </li>
+                    <li class="nav-item">
+                        <span class="badge badge-light ml-2 mt-2">{{ app.user.email }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <span class="badge badge-secondary ml-2 mt-2">
+                        {# Libellé du rôle #}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            Administrateur
+                        {% elseif is_granted('ROLE_MANAGER') %}
+                            Manager
+                        {% elseif is_granted('ROLE_USER') %}
+                            Membre
+                        {% endif %}
+                        </span>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a href="{{ path('app_login') }}" class="btn btn-outline-primary">Connexion</a>
+                    </li>
+                    <li class="nav-item">
+                        <span class="badge badge-secondary ml-2 mt-2">Visiteur</span>
+                    </li>
+                    {% endif %}
                 </ul>
                 <form class="form-inline my-2 my-lg-0" action="{{ path('home') }}">
                     <input class="form-control mr-sm-2" type="search" name="search" placeholder="Un titre de film" value="{{ app.request.query.get('search') ?? '' }}" aria-label="Search">
