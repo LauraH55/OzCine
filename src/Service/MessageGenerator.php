@@ -8,16 +8,23 @@ use Psr\Log\LoggerInterface;
  * Classe (service) qui retourne un message au hasard
  */
 class MessageGenerator
-{
-    
+{    
     /**
      * Autre service dont dépend notre Service MessageGenerator
      * c'est le contenur de service qui va se charger de l'instancier pour nous
      */
     private $logger;
-    public function __construct(LoggerInterface $logger)
+
+    /**
+     * Propriété qui indique si on log ou pas le message
+     * Ce paramètre de configuration est défini dans config/services.yaml
+     */
+    private $isLoggingEnabled;
+
+    public function __construct(LoggerInterface $logger, $isLoggingEnabled)
     {
         $this->logger = $logger;
+        $this->isLoggingEnabled = $isLoggingEnabled;
     }
 
     public function getHappyMessage()
@@ -30,7 +37,10 @@ class MessageGenerator
 
         $randomMessage = $messages[array_rand($messages)];
 
-        $this->logger->info('Message généré', ['message' => $randomMessage]);
+        // On log ou pas ?
+        if ($this->isLoggingEnabled) {
+            $this->logger->info('Message généré', ['message' => $randomMessage]);
+        }
 
         return $randomMessage;
     }
