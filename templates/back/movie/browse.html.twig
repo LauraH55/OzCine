@@ -28,6 +28,10 @@
       <td><a href="{{ path('admin_read', {id: movie.id}) }}">{{ movie.title }}</a></td>
       {# @see https://www.php.net/manual/fr/datetime.format.php#refsect1-datetime.format-parameters #}
       <td>{{ movie.releaseDate|date('d-m-Y') }}</td>
+      <td><form action="{{ path('admin_edit_movie', {id: movie.id}) }}" method="POST">
+
+        <button class="btn btn-sm btn-success" type="submit">Modifier</button>
+      </form></td>
       <td><form action="{{ path('admin_delete_movie', {id: movie.id}) }}" onsubmit="return confirm('Supprimer le film #{{ movie.id }} ?')" method="POST">
 
         <button class="btn btn-sm btn-danger" type="submit">Supprimer</button>

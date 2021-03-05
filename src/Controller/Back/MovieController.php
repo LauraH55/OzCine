@@ -106,7 +106,7 @@ class MovieController extends AbstractController
      *
      * @Route("/admin/edit/{id<\d+>}", name="admin_edit_movie", methods={"GET", "POST"})
      */
-    public function edit(Movie $movie, Request $request): Response
+    public function edit(Movie $movie, Request $request, SluggerInterface $slugger): Response
     {   
 
          // 404 ?
@@ -131,6 +131,11 @@ class MovieController extends AbstractController
             // On demande au Manager de sauvegarder l'entité
             $entityManager = $this->getDoctrine()->getManager();
             // Pas besoin de persist car on modifie
+
+            // SLUG
+            $slug = $slugger->slug($movie->getTitle(), $separator = '-', $locale = null);
+            $movie->setSlug($slug);
+
             $entityManager->flush();
 
             // On redirige vers ....
