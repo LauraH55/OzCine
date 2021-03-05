@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MovieController extends AbstractController
@@ -60,7 +61,7 @@ class MovieController extends AbstractController
      *
      * @Route("/admin/add", name="admin_add_movie", methods={"GET", "POST"})
      */
-    public function add(Request $request, EntityManagerInterface $entityManager): Response
+    public function add(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {   
         // L'entité à créer
         $movie= new Movie();
@@ -80,6 +81,10 @@ class MovieController extends AbstractController
             //dd($reviewData);
 
             // On demande au Manager de sauvegarder l'entité
+
+            // SLUG
+            $slug = $slugger->slug($movie->getTitle(), $separator = '-', $locale = null);
+            $movie->setSlug($slug);
             
             $entityManager->persist($movie);
             $entityManager->flush();

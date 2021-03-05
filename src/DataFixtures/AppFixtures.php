@@ -12,6 +12,7 @@ use App\Entity\Casting;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use App\DataFixtures\Provider\MovieDbProvider;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * Classe de Fixture
@@ -20,6 +21,13 @@ use App\DataFixtures\Provider\MovieDbProvider;
  */
 class AppFixtures extends Fixture
 {
+    private $slugger;
+
+    public function __construct(SluggerInterface $slugger)
+    {
+        $this->slugger = $slugger;
+    }
+    
     // On règle nos valeurs ici
     const NB_GENRES = 20;
     const NB_MOVIES = 10;
@@ -105,9 +113,15 @@ class AppFixtures extends Fixture
             // Un film
             $movie = new Movie();
             $movie->setTitle($faker->unique()->movieTitle());
+            // SLUG
+            $slug = $this->slugger->slug($movie->getTitle(), $separator = '-', $locale = null);
+            $movie->setSlug($slug);
+            //dump($movie);
             // Génère un timestamp aléatoire de 1926 à maintenant
             $movie->setReleaseDate($faker->dateTimeBetween('-100 years'));
             $movie->setCreatedAt(new \DateTime());
+            
+            
 
             // On associe de 1 à 3 genres au hasard
             // /!\ On va gérer l'unicité avec shuffle()
