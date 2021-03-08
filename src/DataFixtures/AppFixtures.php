@@ -22,10 +22,14 @@ use Symfony\Component\String\Slugger\SluggerInterface;
  */
 class AppFixtures extends Fixture
 {
+    // Slugger
     private $slugger;
     // Password encoder
     private $passwordEncoder;
 
+    /**
+     * On injecte les dépendances (les objets utiles au fonctionnement de nos Fixtures) dans le constructeur, car AppFixtures est elle aussi un service
+     */
     public function __construct(SluggerInterface $slugger, UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->slugger = $slugger;
