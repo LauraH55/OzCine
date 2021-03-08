@@ -6,6 +6,7 @@ use App\Entity\Movie;
 use App\Form\MovieType;
 use App\Repository\MovieRepository;
 use App\Repository\CastingRepository;
+use App\Service\MySlugger;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -61,7 +62,7 @@ class MovieController extends AbstractController
      *
      * @Route("/admin/add", name="admin_add_movie", methods={"GET", "POST"})
      */
-    public function add(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
+    public function add(Request $request, EntityManagerInterface $entityManager, MySlugger $mySlugger): Response
     {   
         // L'entité à créer
         $movie= new Movie();
@@ -83,7 +84,7 @@ class MovieController extends AbstractController
             // On demande au Manager de sauvegarder l'entité
 
             // SLUG
-            $slug = $slugger->slug($movie->getTitle(), $separator = '-', $locale = null);
+            $slug = $mySlugger->slugify($movie->getTitle(), $separator = '-', $locale = null);
             $movie->setSlug($slug);
             
             $entityManager->persist($movie);
@@ -106,7 +107,7 @@ class MovieController extends AbstractController
      *
      * @Route("/admin/edit/{id<\d+>}", name="admin_edit_movie", methods={"GET", "POST"})
      */
-    public function edit(Movie $movie, Request $request, SluggerInterface $slugger): Response
+    public function edit(Movie $movie, Request $request, MySlugger $mySlugger): Response
     {   
 
          // 404 ?
@@ -133,7 +134,7 @@ class MovieController extends AbstractController
             // Pas besoin de persist car on modifie
 
             // SLUG
-            $slug = $slugger->slug($movie->getTitle(), $separator = '-', $locale = null);
+            $slug = $mySlugger->slugify($movie->getTitle(), $separator = '-', $locale = null);
             $movie->setSlug($slug);
 
             $entityManager->flush();
