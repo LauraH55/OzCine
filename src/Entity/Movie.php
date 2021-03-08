@@ -15,6 +15,9 @@ use Symfony\Component\String\Slugger\SluggerInterface;
  * @ORM\Entity(repositoryClass="App\Repository\MovieRepository")
  * @UniqueEntity("title")
  * @see https://symfony.com/doc/current/reference/constraints/UniqueEntity.html
+ * 
+ * @see https://symfony.com/doc/current/doctrine/events.html#doctrine-lifecycle-callbacks
+ * @ORM\HasLifecycleCallbacks()
  */
 class Movie
 {
@@ -176,6 +179,14 @@ class Movie
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdatedAtValue()
+    {
+        $this->updatedAt = new \DateTime();
     }
 
     /**

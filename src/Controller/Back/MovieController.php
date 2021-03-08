@@ -124,10 +124,13 @@ class MovieController extends AbstractController
         //2. Demande au formulaire d'inspecter la requête 
         $form->handleRequest($request);
 
-        // Le formulaire est-il soumis et valide ? 
+        // Le formulaire est-il soumis et valide ?
+        // Slug
+        // /!\ Attention au SEO
+        // dans la vraie on doit créer une redirection 302
+        // de l'ancienne URL vers la nouvelle
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $movie->setUpdatedAt(new \DateTime());
 
             // On demande au Manager de sauvegarder l'entité
             $entityManager = $this->getDoctrine()->getManager();
