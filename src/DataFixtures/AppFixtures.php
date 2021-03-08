@@ -12,6 +12,7 @@ use App\Entity\Casting;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use App\DataFixtures\Provider\MovieDbProvider;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
@@ -22,11 +23,15 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class AppFixtures extends Fixture
 {
     private $slugger;
+    // Password encoder
+    private $passwordEncoder;
 
-    public function __construct(SluggerInterface $slugger)
+    public function __construct(SluggerInterface $slugger, UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->slugger = $slugger;
+        $this->passwordEncoder = $passwordEncoder;
     }
+
     
     // On règle nos valeurs ici
     const NB_GENRES = 20;
@@ -52,7 +57,9 @@ class AppFixtures extends Fixture
         // => on veut controler les données de ces 3 users
         $user = new User();
         $user->setEmail('user@user.com');
-        $user->setPassword('$argon2id$v=19$m=65536,t=4,p=1$E6eVPobLnnNG+DRGtjb5xQ$GDy87lQ1jEn6hpvSuYgzFy8+xPCXA2iB4zYFpmom0PI');
+        // On encode le mot de passe avec le service qui va bien
+        $encodedPassword = $this->passwordEncoder->encodePassword($user, 'user');
+        $user->setPassword($encodedPassword);
         $user->setRoles(['ROLE_USER']);
         $manager->persist($user);
 
@@ -60,14 +67,18 @@ class AppFixtures extends Fixture
         $userManager = new User();
         $userManager->setEmail('manager@manager.com');
         // manager
-        $userManager->setPassword('$argon2id$v=19$m=65536,t=4,p=1$dWhGK3omSDcZFm855F8QpA$wPS1ylHDw5KTTESc4p4wqv/jE4Js54mP8AHbLmorXl8');
+        // On encode le mot de passe avec le service qui va bien
+        $encodedPassword = $this->passwordEncoder->encodePassword($userManager, 'manager');
+        $userManager->setPassword($encodedPassword);
         $userManager->setRoles(['ROLE_MANAGER']);
         $manager->persist($userManager);
 
         $admin = new User();
         $admin->setEmail('admin@admin.com');
         // admin
-        $admin->setPassword('$argon2id$v=19$m=65536,t=4,p=1$vB/QqWTUKbdlGBB4/XKnnw$ZaW222CFopGLs8Y86UksdMJ0E+YQAr2+9JC7kFhvBlU');
+        // On encode le mot de passe avec le service qui va bien
+        $encodedPassword = $this->passwordEncoder->encodePassword($admin, 'admin');
+        $admin->setPassword($encodedPassword);
         $admin->setRoles(['ROLE_ADMIN']);
         $manager->persist($admin);
         
