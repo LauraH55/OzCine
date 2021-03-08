@@ -77,15 +77,8 @@ class MovieController extends AbstractController
         // Le formulaire est-il soumis et valide ? 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // On récupère les données du form
-            $reviewData = $form->getData();
-            //dd($reviewData);
-
-            // On demande au Manager de sauvegarder l'entité
-
-            // SLUG
-            $slug = $mySlugger->slugify($movie->getTitle(), $separator = '-', $locale = null);
-            $movie->setSlug($slug);
+            // On slugifie le titre
+            // => cela a été déplacé dans le Listener
             
             $entityManager->persist($movie);
             $entityManager->flush();
@@ -136,9 +129,8 @@ class MovieController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             // Pas besoin de persist car on modifie
 
-            // SLUG
-            $slug = $mySlugger->slugify($movie->getTitle(), $separator = '-', $locale = null);
-            $movie->setSlug($slug);
+            // On slugifie le titre
+            // => cela a été déplacé dans le Listener
 
             $entityManager->flush();
 

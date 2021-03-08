@@ -12,9 +12,8 @@ use App\Entity\Casting;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use App\DataFixtures\Provider\MovieDbProvider;
-use App\Service\MySlugger;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\String\Slugger\SluggerInterface;
+
 
 /**
  * Classe de Fixture
@@ -23,17 +22,14 @@ use Symfony\Component\String\Slugger\SluggerInterface;
  */
 class AppFixtures extends Fixture
 {
-    // Slugger
-    private $slugger;
     // Password encoder
     private $passwordEncoder;
 
     /**
      * On injecte les dépendances (les objets utiles au fonctionnement de nos Fixtures) dans le constructeur, car AppFixtures est elle aussi un service
      */
-    public function __construct(MySlugger $mySlugger, UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
-        $this->slugger = $mySlugger;
         $this->passwordEncoder = $passwordEncoder;
     }
 
@@ -129,9 +125,10 @@ class AppFixtures extends Fixture
             // Un film
             $movie = new Movie();
             $movie->setTitle($faker->unique()->movieTitle());
-            // SLUG
-            $slug = $this->slugger->slugify($movie->getTitle(), $separator = '-', $locale = null);
-            $movie->setSlug($slug);
+            
+            // On défini le slug basé sur le titre existant
+            // => cela a été déplacé dans le Listener
+
             //dump($movie);
             // Génère un timestamp aléatoire de 1926 à maintenant
             $movie->setReleaseDate($faker->dateTimeBetween('-100 years'));
