@@ -74,6 +74,7 @@ class UserType extends AbstractType
                 }       
  
             })
+            ->getForm();
             
 
             
