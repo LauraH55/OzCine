@@ -7,6 +7,8 @@ parameters:
     # Si on souhaite configurer ce paramètre sur chaque machine
     # On le place dans le .env et .env.local
     app.is_logging_enabled: '%env(bool:IS_LOGGING_ENABLED)%'
+    # MySlugger
+    app.to_lower: true
 
 services:
     # default configuration for services in *this* file
@@ -38,3 +40,8 @@ services:
         # Arguments du constructeur
         arguments:
             $isLoggingEnabled: '%app.is_logging_enabled%'
+
+    
+    App\Service\MySlugger:
+        arguments:
+            $toLower: '%app.to_lower%'
