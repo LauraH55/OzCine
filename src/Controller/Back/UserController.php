@@ -4,8 +4,6 @@ namespace App\Controller\Back;
 
 use App\Entity\User;
 use App\Form\UserType;
-use App\Form\UserAddType;
-use App\Form\UserEditType;
 use Psr\Log\LoggerInterface;
 use App\Repository\UserRepository;
 use App\Service\MessageGenerator;
@@ -38,7 +36,7 @@ class UserController extends AbstractController
     public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder,MessageGenerator $messageGenerator): Response
     {
         $user = new User();
-        $form = $this->createForm(UserAddType::class, $user);
+        $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -78,7 +76,7 @@ class UserController extends AbstractController
      */
     public function edit(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder, LoggerInterface $logger, MessageGenerator $messageGenerator): Response
     {   
-        $form = $this->createForm(UserEditType::class, $user);
+        $form = $this->createForm(UserType::class, $user);
         // Le mot de passe du $user existant va être écrasé par $request
         $form->handleRequest($request);
 
