@@ -88,9 +88,9 @@ class MovieController extends AbstractController
 
 
         if (count($errors) > 0) {
-            
+
             $errorsString = (string) $errors;
-            return new Response($errorsString);
+            return new JsonResponse($errorsString, Response::HTTP_CONFLICT);
 
         }
 
@@ -112,4 +112,33 @@ class MovieController extends AbstractController
         );
 
     }
+
+    /**
+     * Delete movie
+     * @Route("/api/movies/{id<\d+>}", name="api_movies_delete", methods="DELETE")
+     */
+    public function delete(EntityManagerInterface $entityManager, MovieRepository $movieRepository, $id)
+    {   
+        // Récupère l'id du film a supprimé
+        $movie = $movieRepository->find($id);
+
+        // Condition : si le film est différent de null alors on le supprime
+        if ($movie !== null) {
+
+            $entityManager->remove($movie);
+            $entityManager->flush();
+
+            return $this->json('Film supprimé', 200);
+
+        } else {
+
+            $message = [
+                'status' => Response::HTTP_NOT_FOUND,
+                'error' => 'Film non trouvé.',
+            ];
+
+            return $this->json($message, Response::HTTP_NOT_FOUND);
+        }
+    }
 }
+
