@@ -10,9 +10,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/api/users", name="api_users_get", methods="GET")
+     * @Route("/api/users", name="api_users_read", methods="GET")
      */
-    public function users_get(UserRepository $userRepository): Response
+    public function read(UserRepository $userRepository): Response
     {
         $users = $userRepository->findAll();
         // L'option --no-template de make:controller

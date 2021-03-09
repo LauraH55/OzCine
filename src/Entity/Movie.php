@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 
 
@@ -29,6 +30,8 @@ class Movie
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * 
+     * @Groups("movies_read")
      */
     private $id;
 
@@ -36,28 +39,35 @@ class Movie
      * @ORM\Column(type="string", length=100, unique=true)
      * @Assert\NotBlank
      * 
+     * @Groups("movies_read")
+     * 
      */
     private $title;
 
     /**
      * Slug 
      * @ORM\Column(type="string", length=255)
+     * @Groups("movies_read")
      */
     private $slug;
 
     /**
      * @ORM\Column(type="date")
      * @Assert\NotBlank
+     * 
+     * @Groups("movies_read")
      */
     private $releaseDate;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("movies_read")
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups("movies_read")
      */
     private $updatedAt;
 
@@ -69,6 +79,7 @@ class Movie
     /**
      * @ORM\ManyToMany(targetEntity=Genre::class)
      * @Assert\Count(min=1)
+     * @Groups("movies_read")
      */
     private $genres;
 
@@ -127,6 +138,16 @@ class Movie
     public function getReleaseDate()
     {
         return $this->releaseDate;
+    }
+
+    /**
+     * On peut envoyer une donnée directement transformée
+     * Get the year of releaseDate
+     * @Groups("movies_read")
+     */ 
+    public function getReleaseDateYear()
+    {
+        return $this->releaseDate->format('Y');
     }
 
     /**
