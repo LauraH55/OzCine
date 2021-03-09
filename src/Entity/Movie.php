@@ -73,6 +73,7 @@ class Movie
 
     /**
      * @ORM\OneToMany(targetEntity=Review::class, mappedBy="movie", cascade={"remove"})
+     * @Groups("movies_read_item")
      */
     private $reviews;
 
@@ -85,6 +86,7 @@ class Movie
 
     /**
      * @ORM\OneToMany(targetEntity=Casting::class, mappedBy="movie", cascade={"remove"})
+     * @Groups("movies_read_item")
      */
     private $castings;
 

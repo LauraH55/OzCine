@@ -6,6 +6,7 @@ use App\Repository\PersonRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=PersonRepository::class)
@@ -16,16 +17,19 @@ class Person
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("movies_read_item")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Groups("movies_read_item")
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Groups("movies_read_item")
      */
     private $lastname;
 
