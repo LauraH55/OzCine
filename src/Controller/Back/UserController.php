@@ -41,7 +41,7 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // C'est là qu'on encode le mot de passe du User (qui se trouve dans $user)
-            $hashedPassword = $passwordEncoder->encodePassword($user, $form->get('password')->getData());
+            $hashedPassword = $passwordEncoder->encodePassword($user, $user->getPassword());
             // On réassigne le mot de passe encodé dans le User
             $user->setPassword($hashedPassword);
 
@@ -86,7 +86,7 @@ class UserController extends AbstractController
             // c'est qu'on veut le changer
             if ($form->get('password')->getData() !== '') {
                 // C'est là qu'on encode le mot de passe du User (qui se trouve dans $user)
-                $hashedPassword = $passwordEncoder->encodePassword($user, $form->get('password')->getData());
+                $hashedPassword = $passwordEncoder->encodePassword($user, $user->getPassword());
                 // On réassigne le mot passe encodé dans le User
                 $user->setPassword($hashedPassword);
             }

@@ -30,25 +30,19 @@ class UserType extends AbstractType
                 // Checkboxes
                 'expanded' => true,
             ])
-            ->add('password', PasswordType::class, [
-                // Si données vides (null), remplacer par chaîne vide
-                // @see https://symfony.com/doc/current/reference/forms/types/password.html#empty-data
-                'empty_data' => '',
-                'attr' => [
-                    'placeholder' => 'Laissez vide si inchangé',
-                ],
-            
-
-            ])
-            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
-
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+                // Le user mappé sur le form
                 $user = $event->getData();
+                // L'objet form à récupérer pour travailler avec
+                // (car il est inconnu dans cette fonction anonyme)
                 $form = $event->getForm();
 
-                if (empty($user['password']) && $user['password']) {
-
+                // L'entité $user existe-t-il en BDD ?
+                // Si $user a un identifiant, c'est qu'il existe en base
+                if ($user->getId() === null) {
+                    // Si non => add
                     $form->add('password', PasswordType::class, [
-                        // Si données vides (null), remplacer par chaîne vide
+                        // Si donnée vide (null), remplacer par chaine vide
                         // @see https://symfony.com/doc/current/reference/forms/types/password.html#empty-data
                         'empty_data' => '',
                         'constraints' => [
@@ -58,26 +52,28 @@ class UserType extends AbstractType
                             ])
                         ]
                     ]);
-                    
                 } else {
-                
+                    // Si oui => edit
                     $form->add('password', PasswordType::class, [
+                        // Si donnée vide (null), remplacer par chaine vide
+                        // @see https://symfony.com/doc/current/reference/forms/types/password.html#empty-data
                         'empty_data' => '',
                         'attr' => [
                             'placeholder' => 'Laissez vide si inchangé',
                         ],
                         // @see https://symfony.com/doc/current/reference/forms/types/email.html#mapped
                         // Ce champ ne sera présent que dans la requête et dans le form
-                        // mais PAS dans l'Entité !
+                        // mais PAS dans l'entité !
                         'mapped' => false,
+                        // 'constraints' => [
+                        //     new Length([
+                        //         'min' => 4,
+                        //     ])
+                        // ]
                     ]);
-                }       
- 
-            })
-            ->getForm();
-            
+                }
 
-            
+            })
         ;
     }
 
