@@ -4,10 +4,12 @@ namespace App\Controller\Api;
 
 use App\Entity\Movie;
 use App\Repository\MovieRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * API movies
@@ -56,5 +58,42 @@ class MovieController extends AbstractController
             'movies_read_item',
             ]
         ]);
+    }
+
+    /**
+     * Create movie
+     * ON a besoin de REquest et du Serialize
+     * @Route("/api/movies", name="api_movies_create", methods="POST")
+     */
+    public function create(Request $request, SerializerInterface $serializer, EntityManagerInterface $entityManager)
+    {
+        // Récupérer le contenu de la requête, c'est-à-dire le JSON
+        $jsonContent = $request->getContent();
+        //dd($jsonContent);
+
+        // On désérialise ce JSON en entité Movie, grâce au Serializer
+        // On transforme le JSON qui est du text en objet de type App\Entity\Movie
+        // @see https://symfony.com/doc/current/components/serializer.html#deserializing-an-object
+
+        $movie = $serializer->deserialize($jsonContent, Movie::class, 'json');
+        //dd($movie);
+
+        // @todo Valider l'entité => gestion affiche des erreurs en JSON
+
+        // On sauvegarde le film (if submitted is valid...)
+        // On sauvegarde le film
+        $entityManager->persist($movie);
+        $entityManager->flush();
+        //dd($movie);
+
+        // On redirige vers movies_read_item
+        return $this->redirectToRoute(
+            'api_movies_read_item',
+            ['id' => $movie->getId()],
+            // C'est cool d'utiliser les constantes de classe !
+            // => ça aide à la lecture du code et au fait de penser objet
+            Response::HTTP_CREATED
+        );
+
     }
 }
