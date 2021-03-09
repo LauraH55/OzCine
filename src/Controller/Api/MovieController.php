@@ -5,11 +5,14 @@ namespace App\Controller\Api;
 use App\Entity\Movie;
 use App\Repository\MovieRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 
 /**
  * API movies
@@ -65,7 +68,7 @@ class MovieController extends AbstractController
      * ON a besoin de REquest et du Serialize
      * @Route("/api/movies", name="api_movies_create", methods="POST")
      */
-    public function create(Request $request, SerializerInterface $serializer, EntityManagerInterface $entityManager)
+    public function create(Request $request, SerializerInterface $serializer, EntityManagerInterface $entityManager, ValidatorInterface $validator)
     {
         // Récupérer le contenu de la requête, c'est-à-dire le JSON
         $jsonContent = $request->getContent();
@@ -80,11 +83,24 @@ class MovieController extends AbstractController
 
         // @todo Valider l'entité => gestion affiche des erreurs en JSON
 
+        $errors = $validator->validate($movie);
+        //dd($errors);
+
+
+        if (count($errors) > 0) {
+            
+            $errorsString = (string) $errors;
+            return new Response($errorsString);
+
+        }
+
         // On sauvegarde le film (if submitted is valid...)
         // On sauvegarde le film
         $entityManager->persist($movie);
         $entityManager->flush();
         //dd($movie);
+
+    
 
         // On redirige vers movies_read_item
         return $this->redirectToRoute(

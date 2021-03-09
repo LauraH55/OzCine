@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 
@@ -79,7 +78,7 @@ class Movie
 
     /**
      * @ORM\ManyToMany(targetEntity=Genre::class)
-     * @Assert\Count(min=1)
+     * 
      * @Groups("movies_read")
      */
     private $genres;
