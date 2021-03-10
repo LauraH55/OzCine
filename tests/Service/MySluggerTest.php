@@ -15,12 +15,12 @@ class MySluggerTest extends KernelTestCase
     {
         self::bootKernel();
 
-        //$symfonySlugger = new AsciiSlugger();
-        //$mySlugger = new MySlugger($symfonySlugger, false);
+        $symfonySlugger = new AsciiSlugger();
+        $mySlugger = new MySlugger($symfonySlugger, false);
 
-        $container = self::$container;
+        //$container = self::$container;
 
-        $mySlugger = $container->get(MySlugger::class);
+        //$mySlugger = $container->get(MySlugger::class);
 
 
         $this->assertEquals(
