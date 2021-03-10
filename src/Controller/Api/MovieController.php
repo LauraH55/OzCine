@@ -89,8 +89,10 @@ class MovieController extends AbstractController
 
         if (count($errors) > 0) {
 
-            $errorsString = (string) $errors;
-            return new JsonResponse($errorsString, Response::HTTP_CONFLICT);
+            // Le tableau des erreurs est retourné sous forme de JSON
+            // Avec un statut erreur 422
+            // @see https://fr.wikipedia.org/wiki/Liste_des_codes_HTTP
+            return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
 
         }
 
