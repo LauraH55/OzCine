@@ -77,9 +77,12 @@ class Movie
     private $reviews;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Genre::class)
+     * @ORM\ManyToMany(targetEntity=Genre::class, cascade={"persist"})
      * 
      * @Groups("movies_read")
+     * Validation des objets en cascade
+     * @see https://symfony.com/doc/current/reference/constraints/Valid.html
+     * @Assert\Valid
      */
     private $genres;
 
