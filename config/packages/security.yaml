@@ -41,21 +41,30 @@ security:
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
 
-            # Déconnexion 
-            logout:
-                # Soit un chemin (endpoint, /logout), soit un nom de route
-                path: app_logout
-
-            # Classe qui nous connecte
+            # 1ère façon de se connecter à l'appli
+            # Classe qui nous connecte via le formulaire de login Web
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
+
+            # 2ème façon de se connecter à l'appli
+            # Login en API/JSON
+            # @see https://symfony.com/doc/current/security/json_login_setup.html
+            json_login:
+                check_path: /api/login
+
+                # Déconnexion
+            logout:
+                # Soit un chemin (endpoint, /logout), soit un nom de route
+                path: app_logout
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
         # /admin correspond à mon lien admin du MainController
         # La parenthèse sert à grouper et c'est des / pas des | (ou)
+
+        # Web/HTML
 
         # Les routes d'ajout, de modification et suppression => Admin
         - { path: ^/admin/(add|edit|delete), roles: ROLE_ADMIN }
@@ -65,6 +74,12 @@ security:
         - { path: ^/review/add, roles: ROLE_USER }
 
         # On commence par les chemins les plus profonds, qui nécessite un rôle plus fort
+
+        # Web API
+        # ROLE_USER => on doit être connecté au moins en USER pour accéder à l'API
+        - { path: ^/api/movies, methods: [GET], roles: ROLE_USER }
+        # En admin, pour les actions d'écriture
+        - { path: ^/api/movies, methods: [POST, PUT, PATCH, DELETE], roles: ROLE_ADMIN }
 
 
     role_hierarchy:

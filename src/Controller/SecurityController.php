@@ -40,4 +40,23 @@ class SecurityController extends AbstractController
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
+
+    /**
+     * Cette méthode va être appelée si l'authentification est valide
+     * et que l'utilisateur a été connecté par le système de sécurité
+     * 
+     * @Route("/api/login", name="api_login", methods={"POST"})
+     */
+    public function apiLogin()
+    {   
+        // A ce stade, l'utilisateur est considéré comme connecté sur le système
+        // On va retourner au front, ce que l'on souhaite
+        // A adapter selon nos besoins
+        $user = $this->getUser();
+
+        return $this->json([
+            'username' => $user->getUsername(),
+            'roles' => $user->getRoles(),
+        ]);
+    }
 }
