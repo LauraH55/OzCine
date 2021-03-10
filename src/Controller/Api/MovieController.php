@@ -115,32 +115,35 @@ class MovieController extends AbstractController
 
     }
 
-    /**
+     /**
      * Delete movie
+     * 
      * @Route("/api/movies/{id<\d+>}", name="api_movies_delete", methods="DELETE")
      */
-    public function delete(EntityManagerInterface $entityManager, MovieRepository $movieRepository, $id)
-    {   
-        // Récupère l'id du film a supprimé
-        $movie = $movieRepository->find($id);
+    public function delete(Movie $movie = null, EntityManagerInterface $entityManager)
+    {
+        // 404
+        if ($movie === null) {
 
-        // Condition : si le film est différent de null alors on le supprime
-        if ($movie !== null) {
-
-            $entityManager->remove($movie);
-            $entityManager->flush();
-
-            return $this->json('Film supprimé', 200);
-
-        } else {
-
+            // Optionnel, message pour le front
             $message = [
                 'status' => Response::HTTP_NOT_FOUND,
                 'error' => 'Film non trouvé.',
             ];
 
+            // On défini un message custom et un status code HTTP 404
             return $this->json($message, Response::HTTP_NOT_FOUND);
         }
+
+
+        // Sinon on supprime le film en base
+        $entityManager->remove($movie);
+        $entityManager->flush();
+
+        // L'objet $movie existe toujours en mémoire PHP jusqu'à la fin du script
+        return $this->json(
+            ['message' => 'Le film ' . $movie->getTitle() . ' a été supprimé !'],
+            Response::HTTP_OK);
     }
 }
 
