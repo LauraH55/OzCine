@@ -28,7 +28,14 @@ class MovieRepository extends ServiceEntityRepository
     {
         // Requête de base
         $qb = $this->createQueryBuilder('m')
-            ->orderBy('m.title', 'ASC');
+            ->orderBy('m.title', 'ASC')
+            ->innerJoin('m.castings', 'c')
+            ->innerJoin('m.genres', 'g')
+            ->innerJoin('c.person', 'p')
+            ->addSelect('g')
+            ->addSelect('c')
+            ->addSelect('p')
+        ;
 
         // Si mot-clé présent, on ajoute la condition WHERE
         if (null !== $search) {
