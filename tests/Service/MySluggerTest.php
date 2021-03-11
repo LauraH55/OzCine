@@ -1,34 +1,51 @@
-<?php 
+<?php
 
-namespace tests\Service;
-
+namespace App\Tests\Service;
 
 use App\Service\MySlugger;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\String\Slugger\AsciiSlugger;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-
-
-class MySluggerTest extends KernelTestCase   
+/**
+ * Si on on veut et que l'on peut tester un service sans passer le conteneur
+ */
+class MySluggerTest extends TestCase
 {
-    public function testSlugify()
+    public function testSlugifyToLower(): void
     {
-        self::bootKernel();
+        // Instancier notre MySlugger
+        // à la mano (sans passer par le conteneur de Service)
 
-        $symfonySlugger = new AsciiSlugger();
-        $mySlugger = new MySlugger($symfonySlugger, false);
+        // On a donc besoin de la classe AsciiSlugger
+        $asciiSlugger = new AsciiSlugger();
 
-        //$container = self::$container;
+        // LOWER
+        // On peut donner les arguments au constructeur
+        $mySlugger = new MySlugger($asciiSlugger, true);
 
-        //$mySlugger = $container->get(MySlugger::class);
+        // Slugifier une chaine
+        $slug = $mySlugger->slugify('Hello World');
 
+        // Vérifier qu'elle est correcte
+        $this->assertEquals('hello-world', $slug);
+    }
 
-        $this->assertEquals(
-            'cours-forrest-cours',
-            $mySlugger->slugify('cours forrest cours')
-        );
-        
+    public function testSlugifyDefault(): void
+    {
+        // Instancier notre MySlugger
+        // à la mano (sans passer par le conteneur de Service)
 
-    
+        // On a donc besoin de la classe AsciiSlugger
+        $asciiSlugger = new AsciiSlugger();
+
+        // UPPER (normal/par défaut)
+        // On peut donner les arguments au constructeur
+        $mySlugger = new MySlugger($asciiSlugger, false);
+
+        // Slugifier une chaine
+        $slug = $mySlugger->slugify('Hello World');
+
+        // Vérifier qu'elle est correcte
+        $this->assertEquals('Hello-World', $slug);
     }
 }

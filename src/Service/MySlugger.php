@@ -36,4 +36,28 @@ class MySlugger
         return $slug;
     }
 
+
+    /**
+     * Get $toLower Paramètre de configuration pour passer en minuscule
+     *
+     * @return bool
+     */ 
+    public function getToLower()
+    {
+        return $this->toLower;
+    }
+
+    /**
+     * Set $toLower Paramètre de configuration pour passer en minuscule
+     *
+     * @param bool  $toLower  $toLower Paramètre de configuration pour passer en minuscule
+     *
+     * @return self
+     */ 
+    public function setToLower(bool $toLower)
+    {
+        $this->toLower = $toLower;
+
+        return $this;
+    }
 }
