@@ -65,7 +65,7 @@ security:
         # La parenthèse sert à grouper et c'est des / pas des | (ou)
 
         # Web/HTML
-
+        
         # Les routes d'ajout, de modification et suppression => Admin
         - { path: ^/admin/(add|edit|delete), roles: ROLE_ADMIN }
         # Pour toutes les autres pages du back => Manager

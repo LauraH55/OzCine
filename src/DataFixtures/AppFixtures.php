@@ -9,6 +9,7 @@ use App\Entity\Movie;
 use App\Entity\Person;
 use App\Entity\Review;
 use App\Entity\Casting;
+use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use App\DataFixtures\Provider\MovieDbProvider;
@@ -25,12 +26,16 @@ class AppFixtures extends Fixture
     // Password encoder
     private $passwordEncoder;
 
+    // Connection à MySQL (DBAL => PDO)
+    private $connection;
+
     /**
      * On injecte les dépendances (les objets utiles au fonctionnement de nos Fixtures) dans le constructeur, car AppFixtures est elle aussi un service
      */
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder, Connection $connection)
     {
         $this->passwordEncoder = $passwordEncoder;
+        $this->connection = $connection;
     }
 
     
@@ -44,8 +49,30 @@ class AppFixtures extends Fixture
     // On veut par ex. le double de castings
     const NB_PERSONS = 2 * self::NB_CASTINGS;
 
+    private function truncate()
+    {
+        // On passen mode SQL ! On cause avec MySQL
+        // Désactivation des contraintes FK
+        $users = $this->connection->executeQuery('SET foreign_key_checks = 0');
+        // On tronque
+        $users = $this->connection->executeQuery('TRUNCATE TABLE casting');
+        $users = $this->connection->executeQuery('TRUNCATE TABLE department');
+        $users = $this->connection->executeQuery('TRUNCATE TABLE genre');
+        $users = $this->connection->executeQuery('TRUNCATE TABLE job');
+        $users = $this->connection->executeQuery('TRUNCATE TABLE movie');
+        $users = $this->connection->executeQuery('TRUNCATE TABLE movie_genre');
+        $users = $this->connection->executeQuery('TRUNCATE TABLE person');
+        $users = $this->connection->executeQuery('TRUNCATE TABLE review');
+        $users = $this->connection->executeQuery('TRUNCATE TABLE team');
+        $users = $this->connection->executeQuery('TRUNCATE TABLE user');
+        // etc.
+    }
+
     public function load(ObjectManager $manager)
     {
+        // On va truncate nos tables à la main pour revenir à id=1
+        $this->truncate();
+
         $faker = Factory::create('fr_FR');
         // Toujours les mêmes données
         // $faker->seed('Oz');
