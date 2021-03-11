@@ -22,12 +22,12 @@ class AnonymousTest extends WebTestCase
 
     public function urlProvider()
     {
-        yield ['/back/user/browse'];
-        yield ['/back/user/add'];
-        yield ['/back/user/read/35'];
-        yield ['/back/user/edit/11'];
+        yield ['/admin/user/browse'];
+        yield ['/admin/user/add'];
+        yield ['/admin/user/read/1'];
+        yield ['/admin/user/edit/1'];
         yield ['/admin'];
         yield ['/admin/add'];
-        yield ['/admin/edit/11'];
+        yield ['/admin/edit/1'];
     }
 }

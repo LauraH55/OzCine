@@ -16,12 +16,12 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 /**
  * ! Préfixe de route + ! Préfixe de nom de route
  * 
- * @Route("/back/user", name="back_")
+ * 
  */
 class UserController extends AbstractController
 {
     /**
-     * @Route("/browse", name="user_browse", methods={"GET"})
+     * @Route("/admin/user/browse", name="user_browse", methods={"GET"})
      */
     public function browse(UserRepository $userRepository): Response
     {
@@ -31,7 +31,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/add", name="user_add", methods={"GET","POST"})
+     * @Route("/admin/user/add", name="user_add", methods={"GET","POST"})
      */
     public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder,MessageGenerator $messageGenerator): Response
     {
@@ -62,7 +62,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/read/{id}", name="user_read", methods={"GET"})
+     * @Route("/admin/user/read/{id}", name="user_read", methods={"GET"})
      */
     public function show(User $user): Response
     {
@@ -72,7 +72,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{id}", name="user_edit", methods={"GET","POST"})
+     * @Route("/admin/user/edit/{id}", name="user_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder, LoggerInterface $logger, MessageGenerator $messageGenerator): Response
     {   
@@ -102,7 +102,7 @@ class UserController extends AbstractController
             // Flash
             $this->addFlash('success', $messageGenerator->getHappyMessage());
 
-            return $this->redirectToRoute('back_user_browse');
+            return $this->redirectToRoute('user_browse');
         }
 
         return $this->render('back/user/edit.html.twig', [
@@ -112,7 +112,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{id}", name="user_delete", methods={"DELETE"})
+     * @Route("/admin/user/delete/{id}", name="user_delete", methods={"DELETE"})
      */
     public function delete(Request $request, User $user): Response
     {

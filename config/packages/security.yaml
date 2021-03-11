@@ -67,7 +67,7 @@ security:
         # Web/HTML
         
         # Les routes d'ajout, de modification et suppression => Admin
-        - { path: ^/admin/(add|edit|delete), roles: ROLE_ADMIN }
+        - { path: ^/admin/(movie|job|department|user)/(add|edit|delete), roles: ROLE_ADMIN }
         # Pour toutes les autres pages du back => Manager
         - { path: ^/admin, roles: ROLE_MANAGER }
         # Pour ajouter une review, il faut etre connecté en tant qu'user
