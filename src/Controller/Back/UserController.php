@@ -52,7 +52,7 @@ class UserController extends AbstractController
             // Flash
             $this->addFlash('success', $messageGenerator->getHappyMessage());
 
-            return $this->redirectToRoute('back_user_browse');
+            return $this->redirectToRoute('user_browse');
         }
 
         return $this->render('back/user/add.html.twig', [
@@ -122,6 +122,6 @@ class UserController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('back_user_browse');
+        return $this->redirectToRoute('user_browse');
     }
 }
